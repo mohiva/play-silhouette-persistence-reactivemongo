@@ -1,0 +1,8 @@
+{
+  "_id": {
+    "providerID": "twitter",
+    "providerKey": "6253282"
+  },
+  "token": "my.token",
+  "secret": "my.consumer.secret"
+}

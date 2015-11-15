@@ -1,0 +1,14 @@
+{
+  "_id": {
+    "providerID": "facebook",
+    "providerKey": "134405962728980"
+  },
+  "accessToken": "my.access.token",
+  "tokenType": "bearer",
+  "expiresIn": 5183836,
+  "refreshToken": "my.refresh.token",
+  "params": {
+    "param1": "value1",
+    "param2": "value2"
+  }
+}

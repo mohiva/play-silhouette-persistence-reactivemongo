@@ -1,0 +1,11 @@
+sudo: false
+language: scala
+scala:
+- 2.11.7
+jdk:
+- oraclejdk8
+script: scripts/ci-build
+after_success:
+- scripts/coveralls
+notifications:
+  email: false
