@@ -15,11 +15,10 @@
  */
 package com.mohiva.play.silhouette.persistence.reactivemongo.daos
 
-import com.mohiva.play.silhouette.persistence.reactivemongo.{ MongoScope, MongoSpecification, WithMongo }
-import com.mohiva.play.silhouette.persistence.reactivemongo.exceptions.MongoException
-import com.mohiva.play.silhouette.persistence.MongoScope
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.impl.providers.OAuth1Info
+import com.mohiva.play.silhouette.persistence.reactivemongo.exceptions.MongoException
+import com.mohiva.play.silhouette.persistence.reactivemongo.{ MongoScope, MongoSpecification, WithMongo }
 import play.api.test.{ PlaySpecification, WithApplication }
 
 /**
