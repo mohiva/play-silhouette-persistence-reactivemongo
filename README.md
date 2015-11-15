@@ -7,9 +7,11 @@ An implementation of the [Silhouette] persistence layer using [ReactiveMongo].
 
 In your project/Build.scala:
 
+```scala
 libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "VERSION"
 )
+```
 
 ## License
 
