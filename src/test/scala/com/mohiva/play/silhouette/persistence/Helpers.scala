@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Mohiva Organisation (license at mohiva dot com)
+ * Copyright 2016 Mohiva Organisation (license at mohiva dot com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mohiva.play.silhouette.persistence.reactivemongo
+package com.mohiva.play.silhouette.persistence
 
 import java.io.InputStream
 
@@ -28,12 +28,12 @@ import org.specs2.specification.core.Fragments
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{ JsObject, Json, Reads }
 import play.api.test.{ PlaySpecification, WithApplication }
-import play.api.{ Application, Logger, Play }
-import play.modules.reactivemongo.ReactiveMongoApi
-import play.modules.reactivemongo.json.collection.JSONCollection
+import play.api.{ Environment, Logger }
+import play.modules.reactivemongo.{ ReactiveMongoApi, ReactiveMongoModule }
 import reactivemongo.api.commands.DropDatabase
 import reactivemongo.api.commands.bson.BSONDropDatabaseImplicits._
 import reactivemongo.api.commands.bson.CommonImplicits._
+import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -49,6 +49,7 @@ class WithMongo(
   extends WithApplication(
     applicationBuilder
       .configure(config)
+      .bindings(new ReactiveMongoModule)
       .build()
   )
 
@@ -159,25 +160,34 @@ trait MongoScope extends BeforeAfterWithinAround {
   lazy val reactiveMongoAPI = app.injector.instanceOf[ReactiveMongoApi]
 
   /**
+   * The application environment.
+   */
+  implicit val env = app.injector.instanceOf[Environment]
+
+  /**
    * Inserts the test fixtures.
    */
   def before: Unit = {
     import play.modules.reactivemongo.json._
-    Await.result(Future.sequence(fixtures.flatMap {
-      case (c, files) =>
-        val collection = reactiveMongoAPI.db.collection[JSONCollection](c)
-        files.map { file =>
-          val json = Helper.loadJson(file)
-          collection.insert(Json.toJson(json).as[JsObject])
-        }
-    }), 60 seconds)
+    Await.result(reactiveMongoAPI.database.flatMap { db =>
+      Future.sequence(fixtures.flatMap {
+        case (c, files) =>
+          val collection = db.collection[JSONCollection](c)
+          files.map { file =>
+            val json = Helper.loadJson(file)
+            collection.insert(Json.toJson(json).as[JsObject])
+          }
+      })
+    }, Duration(60, SECONDS))
   }
 
   /**
    * Drops the database after the test runs to get an isolated environment.
    */
   def after: Unit = {
-    Await.result(reactiveMongoAPI.db.runCommand(DropDatabase), Duration(10, SECONDS))
+    Await.result(reactiveMongoAPI.database.flatMap { db =>
+      db.runCommand(DropDatabase)
+    }, Duration(60, SECONDS))
   }
 }
 
@@ -202,11 +212,11 @@ object Helper {
    * Loads a test fixture.
    *
    * @param file The test fixture to load.
-   * @param app The started application.
+   * @param env The application environment.
    * @return The test fixture as string.
    */
-  def loadFixture(file: String)(implicit app: Application): FixtureConverter = {
-    FixtureConverter(Play.resourceAsStream(file).getOrElse {
+  def loadFixture(file: String)(implicit env: Environment): FixtureConverter = {
+    FixtureConverter(env.resourceAsStream(file).getOrElse {
       throw new Exception("Cannot load test fixture: " + file)
     })
   }
@@ -215,8 +225,8 @@ object Helper {
    * Loads a test fixture as JSON object.
    *
    * @param file The test fixture to load.
-   * @param app The started application.
+   * @param env The application environment.
    * @return The test fixture as JSON object.
    */
-  def loadJson(file: String)(implicit app: Application) = loadFixture(file).asJson
+  def loadJson(file: String)(implicit env: Environment) = loadFixture(file).asJson
 }

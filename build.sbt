@@ -1,5 +1,7 @@
-import scalariform.formatter.preferences._
+import com.typesafe.sbt.SbtScalariform._
 import xerial.sbt.Sonatype._
+
+import scalariform.formatter.preferences._
 
 //*******************************
 // Play settings
@@ -7,9 +9,9 @@ import xerial.sbt.Sonatype._
 
 name := "play-silhouette-persistence-reactivemongo"
 
-version := "4.0.0-SNAPSHOT"
+version := "4.0.0-RC1"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 resolvers := ("Atlassian Releases" at "https://maven.atlassian.com/public/") +: resolvers.value
 
@@ -18,11 +20,11 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette" % "4.0.0-SNAPSHOT",
-  "com.mohiva" %% "play-silhouette-persistence" % "4.0.0-SNAPSHOT",
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.7.play24",
-  "net.codingwell" %% "scala-guice" % "4.0.0",
-  "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "1.50.0" % "test",
+  "com.mohiva" %% "play-silhouette" % "4.0.0-RC1",
+  "com.mohiva" %% "play-silhouette-persistence" % "4.0.0-RC1",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.11",
+  "net.codingwell" %% "scala-guice" % "4.0.1" % "test",
+  "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "1.50.5" % "test",
   specs2 % Test
 )
 
@@ -46,6 +48,20 @@ scalacOptions ++= Seq(
 )
 
 //*******************************
+// Test settings
+//*******************************
+
+parallelExecution in Test := false
+
+fork in Test := true
+
+// Needed to avoid https://github.com/travis-ci/travis-ci/issues/3775 in forked tests
+// in Travis with `sudo: false`.
+// See https://github.com/sbt/sbt/issues/653
+// and https://github.com/travis-ci/travis-ci/issues/3775
+javaOptions += "-Xmx1G"
+
+//*******************************
 // Maven settings
 //*******************************
 
@@ -53,7 +69,7 @@ sonatypeSettings
 
 organization := "com.mohiva"
 
-description := ""
+description := "ReactiveMongo persistence module for Silhouette"
 
 homepage := Some(url("http://silhouette.mohiva.com/"))
 
@@ -94,4 +110,4 @@ defaultScalariformSettings
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(FormatXml, false)
   .setPreference(DoubleIndentClassDeclaration, false)
-  .setPreference(PreserveDanglingCloseParenthesis, true)
+  .setPreference(DanglingCloseParenthesis, Preserve)
