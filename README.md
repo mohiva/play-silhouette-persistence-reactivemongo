@@ -9,9 +9,54 @@ In your project/Build.scala:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "VERSION"
+  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.0-RC1"
 )
 ```
+
+An instance of the DAO can be created as follow:
+
+```scala
+implicit lazy val format = Json.format[OAuth1Info]
+val dao = new MongoAuthInfoDAO[OAuth1Info](reactiveMongoApi, config)
+```
+
+The Json format is needed to serialize the auth info data into Json. It will be passed implicitly to the DAO instance. 
+The ReactiveMongo API and the Play configuration instance should be provided through dependency injection.
+
+To provide bindings for Guice, you should implement a provider for every auth info type:
+
+```scala
+/**
+ * Provides the implementation of the delegable OAuth1 auth info DAO.
+ *
+ * @param reactiveMongoApi The ReactiveMongo API.
+ * @param config The Play configuration.
+ * @return The implementation of the delegable OAuth1 auth info DAO.
+ */
+@Provides
+def provideOAuth1InfoDAO(reactiveMongoApi: ReactiveMongoApi, config: Configuration): DelegableAuthInfoDAO[OAuth1Info] = {
+  implicit lazy val format = Json.format[OAuth1Info]
+  new MongoAuthInfoDAO[OAuth1Info](reactiveMongoApi, config)
+}
+```
+
+## Configuration
+
+To define the collection name under which the auth info data should be saved, you must provide a configuration setting 
+in the form `silhouette.persistence.reactivemongo.collection.[AuthInfo]`.
+
+As example:
+```
+silhouette {
+  persistence.reactivemongo.collection.OAuth1Info = "auth.info.oauth1"
+  persistence.reactivemongo.collection.OAuth2Info = "auth.info.oauth2"
+  persistence.reactivemongo.collection.OpenIDInfo = "auth.info.oauth1"
+  persistence.reactivemongo.collection.PasswordInfo = "auth.info.passwords"
+}
+```
+
+If no configuration can be found, then the DAO uses automatically the name of the auth info class prefixed with `auth.`. 
+So for the `OAuth1Info` type, it uses the collection name `auth.OAuth1Info`.
 
 ## License
 
