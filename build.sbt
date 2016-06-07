@@ -93,10 +93,6 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-publishArtifact in (Compile, packageDoc) := false
-
-publishArtifact in packageDoc := false
-
 sources in (Compile,doc) := Seq.empty
 
 pomExtra := pom
