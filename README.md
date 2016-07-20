@@ -9,7 +9,7 @@ In your project/Build.scala:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.0-RC1"
+  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.0"
 )
 ```
 
@@ -20,7 +20,7 @@ implicit lazy val format = Json.format[OAuth1Info]
 val dao = new MongoAuthInfoDAO[OAuth1Info](reactiveMongoApi, config)
 ```
 
-The Json format is needed to serialize the auth info data into Json. It will be passed implicitly to the DAO instance. 
+The Json format is needed to serialize the auth info data into Json. It will be passed implicitly to the DAO instance.
 The ReactiveMongo API and the Play configuration instance should be provided through dependency injection.
 
 To provide bindings for Guice, you should implement a provider for every auth info type:
@@ -42,7 +42,7 @@ def provideOAuth1InfoDAO(reactiveMongoApi: ReactiveMongoApi, config: Configurati
 
 ## Configuration
 
-To define the collection name under which the auth info data should be saved, you must provide a configuration setting 
+To define the collection name under which the auth info data should be saved, you must provide a configuration setting
 in the form `silhouette.persistence.reactivemongo.collection.[AuthInfo]`.
 
 As example:
@@ -55,7 +55,7 @@ silhouette {
 }
 ```
 
-If no configuration can be found, then the DAO uses automatically the name of the auth info class prefixed with `auth.`. 
+If no configuration can be found, then the DAO uses automatically the name of the auth info class prefixed with `auth.`.
 So for the `OAuth1Info` type, it uses the collection name `auth.OAuth1Info`.
 
 ## License
