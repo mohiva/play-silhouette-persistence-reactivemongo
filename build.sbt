@@ -22,7 +22,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette" % "4.0.0",
   "com.mohiva" %% "play-silhouette-persistence" % "4.0.0",
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.12",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.12.0",
   "net.codingwell" %% "scala-guice" % "4.0.1" % "test",
   "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "1.50.5" % "test",
   specs2 % Test

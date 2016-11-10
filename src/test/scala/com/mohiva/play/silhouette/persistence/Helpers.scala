@@ -30,6 +30,7 @@ import play.api.libs.json.{ JsObject, Json, Reads }
 import play.api.test.{ PlaySpecification, WithApplication }
 import play.api.{ Environment, Logger }
 import play.modules.reactivemongo.{ ReactiveMongoApi, ReactiveMongoModule }
+import reactivemongo.api.FailoverStrategy
 import reactivemongo.api.commands.DropDatabase
 import reactivemongo.api.commands.bson.BSONDropDatabaseImplicits._
 import reactivemongo.api.commands.bson.CommonImplicits._
@@ -186,7 +187,7 @@ trait MongoScope extends BeforeAfterWithinAround {
    */
   def after: Unit = {
     Await.result(reactiveMongoAPI.database.flatMap { db =>
-      db.runCommand(DropDatabase)
+      db.runCommand(DropDatabase, FailoverStrategy.default)
     }, Duration(60, SECONDS))
   }
 }

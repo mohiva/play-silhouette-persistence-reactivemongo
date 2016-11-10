@@ -133,7 +133,7 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](reactiveMongoApi: Reacti
     case e => Future.failed(new MongoException("Got exception from MongoDB", e.getCause))
   }.map { r =>
     WriteResult.lastError(r) match {
-      case Some(e) => throw new MongoException(r.message, e)
+      case Some(e) => throw new MongoException(e.message, e)
       case _ => entity
     }
   }
@@ -148,7 +148,7 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](reactiveMongoApi: Reacti
     case e => Future.failed(new MongoException("Got exception from MongoDB", e.getCause))
   }.map { r =>
     WriteResult.lastError(r) match {
-      case Some(e) => throw new MongoException(r.message, e)
+      case Some(e) => throw new MongoException(e.message, e)
       case _ => r.n
     }
   }
