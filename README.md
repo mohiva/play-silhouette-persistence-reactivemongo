@@ -9,7 +9,7 @@ In your project/Build.scala:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.0"
+  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.1"
 )
 ```
 
@@ -62,7 +62,7 @@ So for the `OAuth1Info` type, it uses the collection name `auth.OAuth1Info`.
 
 The code is licensed under [Apache License v2.0] and the documentation under [CC BY 3.0].
 
-[Silhouette]: http://silhouette.mohiva.com/
+[Silhouette]: http://www.silhouette.rocks/
 [ReactiveMongo]: http://reactivemongo.org/
 [Apache License v2.0]: http://www.apache.org/licenses/LICENSE-2.0
 [CC BY 3.0]: http://creativecommons.org/licenses/by/3.0/
