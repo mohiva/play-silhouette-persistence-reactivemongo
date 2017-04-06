@@ -51,8 +51,14 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](reactiveMongoApi: Reacti
 
   /**
    * The collection to use for JSON queries.
+   *
+   * It’s generally a good practice not to assign the database and collection references to val (even to lazy val),
+   * as it’s better to get a fresh reference each time, to automatically recover from any previous issues
+   * (e.g. network failure).
+   *
+   * @see http://reactivemongo.org/releases/0.12/documentation/release-details.html
    */
-  private val jsonCollection = reactiveMongoApi.database.map(db => db[JSONCollection](collectionName))
+  private def jsonCollection = reactiveMongoApi.database.map(db => db[JSONCollection](collectionName))
 
   /**
    * Finds the auth info which is linked with the specified login info.
