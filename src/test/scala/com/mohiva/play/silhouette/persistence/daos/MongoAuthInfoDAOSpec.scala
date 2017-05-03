@@ -76,7 +76,7 @@ class MongoAuthInfoDAOSpec extends PlaySpecification with MongoSpecification {
     "update an existing auth info" in new WithMongo with Context {
       val updatedInfo = oauth1Info.copy(secret = "updated")
 
-      await(dao.update(loginInfo, updatedInfo)) must be equalTo updatedInfo
+      await(dao.save(loginInfo, updatedInfo)) must be equalTo updatedInfo
       await(dao.find(loginInfo)) must beSome(updatedInfo)
     }
   }
@@ -101,6 +101,9 @@ class MongoAuthInfoDAOSpec extends PlaySpecification with MongoSpecification {
       "auth.OAuth1Info" -> Seq("oauth1.info.json")
     )
 
+    /**
+     * Converts [[OAuth1Info]] to Json and vice versa.
+     */
     implicit lazy val format = Json.format[OAuth1Info]
 
     /**
