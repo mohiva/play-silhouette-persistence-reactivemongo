@@ -9,7 +9,7 @@ import scalariform.formatter.preferences._
 
 name := "play-silhouette-persistence-reactivemongo"
 
-version := "4.0.2"
+version := "4.0.3"
 
 scalaVersion := "2.11.8"
 

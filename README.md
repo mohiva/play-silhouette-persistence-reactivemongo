@@ -9,7 +9,7 @@ In your project/Build.scala:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.2"
+  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "4.0.3"
 )
 ```
 
