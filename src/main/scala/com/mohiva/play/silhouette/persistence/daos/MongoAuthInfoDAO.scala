@@ -18,14 +18,13 @@ package com.mohiva.play.silhouette.persistence.daos
 import com.mohiva.play.silhouette.api.{ AuthInfo, LoginInfo }
 import com.mohiva.play.silhouette.persistence.exceptions.MongoException
 import play.api.Configuration
-import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.json.{ Format, JsObject, Json }
 import play.modules.reactivemongo.ReactiveMongoApi
 import play.modules.reactivemongo.json._
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.collection.JSONCollection
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.reflect.ClassTag
 
 /**
@@ -35,8 +34,13 @@ import scala.reflect.ClassTag
  * @param config           The Play configuration.
  * @tparam A The type of the auth info to store.
  */
-class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](reactiveMongoApi: ReactiveMongoApi, config: Configuration)
-  extends DelegableAuthInfoDAO[A] {
+class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](
+  reactiveMongoApi: ReactiveMongoApi,
+  config: Configuration
+)(
+  implicit
+  ex: ExecutionContext
+) extends DelegableAuthInfoDAO[A] {
 
   /**
    * The name of the auth info to store.
@@ -46,7 +50,7 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](reactiveMongoApi: Reacti
   /**
    * The name of the collection to store the auth info.
    */
-  private val collectionName = config.getString(s"silhouette.persistence.reactivemongo.collection.$authInfoName")
+  private val collectionName = config.getOptional[String](s"silhouette.persistence.reactivemongo.collection.$authInfoName")
     .getOrElse(s"auth.$authInfoName")
 
   /**

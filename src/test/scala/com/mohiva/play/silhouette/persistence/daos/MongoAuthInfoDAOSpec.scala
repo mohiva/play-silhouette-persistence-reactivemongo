@@ -24,6 +24,8 @@ import play.api.libs.json.Json
 import play.api.test.{ PlaySpecification, WithApplication }
 import play.modules.reactivemongo.ReactiveMongoApi
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 /**
  * Test case for the [[MongoAuthInfoDAO]] class.
  */
