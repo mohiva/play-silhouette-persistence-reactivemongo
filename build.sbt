@@ -9,22 +9,22 @@ import scalariform.formatter.preferences._
 
 name := "play-silhouette-persistence-reactivemongo"
 
-version := "5.0.2"
+version := "5.0.5"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 
-crossScalaVersions := Seq("2.12.4", "2.11.12")
+crossScalaVersions := Seq("2.12.6", "2.11.12")
 
 resolvers += Resolver.jcenterRepo
 
 resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette" % "5.0.3",
-  "com.mohiva" %% "play-silhouette-persistence" % "5.0.3",
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.13.0-play26",
-  "net.codingwell" %% "scala-guice" % "4.1.1" % "test",
-  "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "2.0.0" % "test",
+  "com.mohiva" %% "play-silhouette" % "5.0.5",
+  "com.mohiva" %% "play-silhouette-persistence" % "5.0.5",
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.16.0-play26",
+  "net.codingwell" %% "scala-guice" % "4.2.1" % "test",
+  "de.flapdoodle.embed" % "de.flapdoodle.embed.mongo" % "2.1.1" % "test",
   specs2 % Test
 )
 

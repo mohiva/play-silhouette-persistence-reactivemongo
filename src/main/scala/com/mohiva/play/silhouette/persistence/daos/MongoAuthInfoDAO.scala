@@ -20,7 +20,7 @@ import com.mohiva.play.silhouette.persistence.exceptions.MongoException
 import play.api.Configuration
 import play.api.libs.json.{ Format, JsObject, Json }
 import play.modules.reactivemongo.ReactiveMongoApi
-import play.modules.reactivemongo.json._
+import reactivemongo.play.json._
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.play.json.collection.JSONCollection
 
@@ -71,7 +71,7 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](
    * @return The retrieved auth info or None if no auth info could be retrieved for the given login info.
    */
   def find(loginInfo: LoginInfo) = {
-    jsonCollection.flatMap(_.find(Json.obj("_id" -> loginInfo)).projection(Json.obj("_id" -> 0)).one[A])
+    jsonCollection.flatMap(_.find(Json.obj("_id" -> loginInfo), projection = Some(Json.obj("_id" -> 0))).one[A])
   }
 
   /**
@@ -119,7 +119,7 @@ class MongoAuthInfoDAO[A <: AuthInfo: ClassTag: Format](
    * @param loginInfo The login info for which the auth info should be removed.
    * @return A future to wait for the process to be completed.
    */
-  def remove(loginInfo: LoginInfo) = onSuccess(jsonCollection.flatMap(_.remove(Json.obj("_id" -> loginInfo))), ())
+  def remove(loginInfo: LoginInfo) = onSuccess(jsonCollection.flatMap(_.delete().one(Json.obj("_id" -> loginInfo))), ())
 
   /**
    * Merges the [[LoginInfo]] and the [[AuthInfo]] into one Json object.

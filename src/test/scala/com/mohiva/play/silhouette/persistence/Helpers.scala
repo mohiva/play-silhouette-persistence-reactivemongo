@@ -17,7 +17,7 @@ package com.mohiva.play.silhouette.persistence
 
 import java.io.InputStream
 
-import de.flapdoodle.embed.mongo.config.{ MongodConfigBuilder, Net, RuntimeConfigBuilder }
+import de.flapdoodle.embed.mongo.config.{ MongoCmdOptionsBuilder, MongodConfigBuilder, Net, RuntimeConfigBuilder }
 import de.flapdoodle.embed.mongo.distribution.Version
 import de.flapdoodle.embed.mongo.{ Command, MongodProcess, MongodStarter }
 import de.flapdoodle.embed.process.runtime.Network
@@ -30,10 +30,6 @@ import play.api.libs.json.{ JsObject, Json, Reads }
 import play.api.test.{ PlaySpecification, WithApplication }
 import play.api.{ Environment, Logger }
 import play.modules.reactivemongo.{ ReactiveMongoApi, ReactiveMongoModule }
-import reactivemongo.api.FailoverStrategy
-import reactivemongo.api.commands.DropDatabase
-import reactivemongo.api.commands.bson.BSONDropDatabaseImplicits._
-import reactivemongo.api.commands.bson.CommonImplicits._
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -119,6 +115,7 @@ trait MongoSpecification extends PlaySpecification {
     .prepare(new MongodConfigBuilder()
       .version(embedMongoDBVersion())
       .net(new Net(embedConnectionPort(), Network.localhostIsIPv6))
+      .cmdOptions(new MongoCmdOptionsBuilder().useNoJournal(false).build())
       .build
     )
 
@@ -168,7 +165,7 @@ trait MongoScope extends BeforeAfterWithinAround {
    * Inserts the test fixtures.
    */
   def before: Unit = {
-    import play.modules.reactivemongo.json._
+    import reactivemongo.play.json._
     Await.result(reactiveMongoAPI.database.flatMap { db =>
       Future.sequence(fixtures.flatMap {
         case (c, files) =>
@@ -186,7 +183,7 @@ trait MongoScope extends BeforeAfterWithinAround {
    */
   def after: Unit = {
     Await.result(reactiveMongoAPI.database.flatMap { db =>
-      db.runCommand(DropDatabase, FailoverStrategy.default)
+      db.drop()
     }, Duration(60, SECONDS))
   }
 }
