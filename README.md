@@ -1,4 +1,4 @@
-Silhouette Persistence ReactiveMongo [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mohiva/play-silhouette-persistence-reactivemongo_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mohiva/play-silhouette-persistence-reactivemongo_2.11) [![Build Status](https://travis-ci.org/mohiva/play-silhouette-persistence-reactivemongo.png)](https://travis-ci.org/mohiva/play-silhouette-persistence-reactivemongo) [![Coverage Status](https://coveralls.io/repos/mohiva/play-silhouette-persistence-reactivemongo/badge.svg?branch=master&service=github)](https://coveralls.io/github/mohiva/play-silhouette-persistence-reactivemongo?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mohiva/play-silhouette?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Silhouette Persistence ReactiveMongo [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mohiva/play-silhouette-persistence-reactivemongo_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mohiva/play-silhouette-persistence-reactivemongo_2.12) [![Build Status](https://travis-ci.org/mohiva/play-silhouette-persistence-reactivemongo.png)](https://travis-ci.org/mohiva/play-silhouette-persistence-reactivemongo) [![Coverage Status](https://coveralls.io/repos/mohiva/play-silhouette-persistence-reactivemongo/badge.svg?branch=master&service=github)](https://coveralls.io/github/mohiva/play-silhouette-persistence-reactivemongo?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mohiva/play-silhouette?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ==========
 
 An implementation of the [Silhouette] persistence layer using [ReactiveMongo].
@@ -9,7 +9,7 @@ In your project/Build.scala:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "5.0.0"
+  "com.mohiva" %% "play-silhouette-persistence-reactivemongo" % "5.0.6"
 )
 ```
 
